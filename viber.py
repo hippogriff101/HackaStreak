@@ -28,17 +28,17 @@ def streak_command(ack, respond, command):
 
         if r.status_code == 404:
             print("They putt in a username that doesn't exist.")
-            respond(f"❌ User '{username}' does not exist.")
+            respond(f"User '{username}' does not exist.")
             return
 
         if r.status_code == 403:
             print("They putt in a username that has a private profile.")
-            respond(f"🔒 User '{username}' has a private profile.")
+            respond(f"User '{username}' has a private profile.")
             return
 
         if r.status_code != 200:
             print(f"Hackatime API error: {r.status_code}")
-            respond(f"⚠️ Hackatime API error ({r.status_code}). Try again later.")
+            respond(f"Hackatime API error ({r.status_code}). Try again later.")
             return
 
         data = r.json()
@@ -49,10 +49,10 @@ def streak_command(ack, respond, command):
 
     except requests.exceptions.RequestException:
         print("Network error while connecting to Hackatime API.")
-        respond("⚠️ Could not connect to Hackatime API.")
+        respond("Could not connect to Hackatime API.")
     except Exception:
         print("An unexpected error occurred.")
-        respond("⚠️ Unexpected error occurred.")
+        respond("Unexpected error occurred.")
 
 if __name__ == "__main__":
     handler = SocketModeHandler(app, os.getenv("SLACK_APP_TOKEN"))
