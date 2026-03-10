@@ -21,13 +21,32 @@ errors for hackatime api, network etc.
 
 There is also command line text to show what the app is doing
 
-## Do it yourself
+## How to run it yourself!?
 
-Go to api.slack.com/apps/ and make a new one
+Head over to api.slack.com/apps and make a new application, enable socket mode and grab the APP TOKEN!
 
-give it perms, creat commands etc.
+Then, in slack website, make the command needed: `/hackastreak'!
 
-you need a `SLACK_BOT_TOKEN` and a `SLACK_APP_TOKEN`!
-_don't commit your.env_
+Next add the following Bot Scopes:
+```
+commands
+chat:write
 
-this is not detailed, i will fix later!
+```
+Your good, install the app to your workspace, get the BOT TOKEN!
+
+Now add them into your `.env`!
+
+```
+SLACK_BOT_TOKEN=
+SLACK_APP_TOKEN=
+
+```
+
+Make sure all the dependencies are installed:
+```
+requests
+slack-bolt
+dotenv
+```
+Run the script!
