@@ -1,31 +1,35 @@
 # HackaStreak
 
-A Slack Bot that tells you a users's current [hackatime](hackatime.hackclub.com) streak!
+A parcially vibe-coded Slack Bot that tells you a users's current [hackatime](hackatime.hackclub.com) streak!
 
-[Hackatime](hackatime.hackclub.com) is a hackclub site that logs your time coding! As of **now** I have [69 hours](hackatime.hackclub.com/freddie) coding on hackatime *.
+[Hackatime](hackatime.hackclub.com) is a hackclub site that logs your time coding! Check out my stats at my [Hackatime public Page](hackatime.hackclub.com/@freddie)
 
-This project is partically vibecoded as I'm new to requests and stuff but is a fun projects. Made using GPT-5, Github Copiolt and my fingers on a keyboard.
+This project is partically vibecoded as I'm new to requests and stuff but is a fun projects. Made using GPT-5, Github Copilot and my fingers on a keyboard.
+
+> [!NOTE]
+> This is currently being hosted on a Pi Zero 2 W! 
 
 ## How it works?
 
-Uses python, obvs /silly
-Slack Bolt, socketmode thingy.
-https://hackatime.hackclub.com/api-docs/
-
-### In testing???
-
 `/hackastreak [hackatime username]`
-calls api to find if users: exists or if they are private
+Calls Hackatime [API](https://hackatime.hackclub.com/api-docs/) to find if users: 
+a) actually exists 
+or 
+b) if their stats are private
+The bot also detects errors with  api or network issues.
 
-errors for hackatime api, network etc.
+There is also command line text to show what the app is doing:
 
-There is also command line text to show what the app is doing
+  terminal output: `Hackatime API error: {r.status_code}` or `Fetching Hackatime stats for user: {username}`
+  
+  (_this could be optimised with `logger`_)
+
 
 ## How to run it yourself!?
 
-Head over to api.slack.com/apps and make a new application, enable socket mode and grab the APP TOKEN!
+Head over to api.slack.com/apps and make a new application, enable socket mode and grab the `APP TOKEN`!
 
-Then, in slack website, make the command needed: `/hackastreak'!
+Then, in slack website, make the command needed: `/hackastreak`!
 
 Next add the following Bot Scopes:
 ```
