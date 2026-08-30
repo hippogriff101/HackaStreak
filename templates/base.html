@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}HackaStreak{% endblock %}</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 640px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+            color: #1a1a1a;
+        }
+        h1 { margin-bottom: 0.25rem; }
+        .subtitle { color: #666; margin-top: 0; }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1rem 0;
+        }
+        .message { background: #e6f4ea; border: 1px solid #b7e1c2; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; }
+        .error { background: #fdeaea; border: 1px solid #f3b4b4; padding: 0.75rem; border-radius: 6px; margin-bottom: 1rem; }
+        input[type=text], input[type=number] { padding: 0.5rem; width: 100%; box-sizing: border-box; margin: 0.5rem 0; }
+        button, .btn {
+            display: inline-block;
+            background: #4a154b;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        table { border-collapse: collapse; width: 100%; margin: 1rem 0; }
+        th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        nav a { margin-right: 1rem; }
+    </style>
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>

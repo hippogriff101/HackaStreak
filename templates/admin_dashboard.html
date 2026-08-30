@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}HackaStreak Admin{% endblock %}
+{% block content %}
+    <h1>HackaStreak Admin</h1>
+    <nav>
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('admin_settings') }}">Settings</a>
+        <a href="{{ url_for('admin_logout') }}">Log out</a>
+    </nav>
+
+    {% if message %}<div class="message">{{ message }}</div>{% endif %}
+
+    <div class="card">
+        <form method="post" action="{{ url_for('admin_run_job') }}">
+            <button type="submit">Run daily job now</button>
+        </form>
+    </div>
+
+    <h2>Linked users ({{ users|length }})</h2>
+    <table>
+        <tr>
+            <th>Slack user</th>
+            <th>Hackatime username</th>
+            <th>Verified</th>
+            <th>Streak</th>
+            <th>Last checked</th>
+            <th>Reminders</th>
+            <th></th>
+        </tr>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.slack_user_id }}</td>
+            <td>{{ u.hackatime_username }}</td>
+            <td>{{ "yes" if u.hackatime_verified else "no" }}</td>
+            <td>{{ u.last_known_streak }}</td>
+            <td>{{ u.last_checked_at or "never" }}</td>
+            <td>{{ "on" if u.reminder_opt_in else "off" }}</td>
+            <td>
+                <form method="post" action="{{ url_for('admin_unlink', slack_user_id=u.slack_user_id) }}"
+                      onsubmit="return confirm('Unlink this user?');">
+                    <button type="submit">Unlink</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Recent job runs</h2>
+    <table>
+        <tr>
+            <th>Started</th>
+            <th>Finished</th>
+            <th>Status</th>
+            <th>Checked</th>
+            <th>Skipped</th>
+            <th>Errors</th>
+        </tr>
+        {% for run in job_runs %}
+        <tr>
+            <td>{{ run.started_at }}</td>
+            <td>{{ run.finished_at or "-" }}</td>
+            <td>{{ run.status }}</td>
+            <td>{{ run.users_checked }}</td>
+            <td>{{ run.users_skipped }}</td>
+            <td>{{ run.error_summary or "-" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

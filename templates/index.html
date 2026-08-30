@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}HackaStreak{% endblock %}
+{% block content %}
+    <h1>🔥 HackaStreak</h1>
+    <p class="subtitle">Link your Slack account to your Hackatime username to get streak reminders and milestone shout-outs.</p>
+
+    {% if message %}<div class="message">{{ message }}</div>{% endif %}
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+    {% if not slack_user_id %}
+        <div class="card">
+            <p>Step 1: add HackaStreak to your Hack Club Slack.</p>
+            <a class="btn" href="{{ url_for('slack_install') }}">Add to Slack</a>
+        </div>
+    {% else %}
+        <div class="card">
+            <p>Step 2: link your Hackatime username.</p>
+            {% if linked_user %}
+                <p>Currently linked to <strong>{{ linked_user.hackatime_username }}</strong>
+                    {% if linked_user.hackatime_verified %}(verified){% endif %}
+                    (last known streak: {{ linked_user.last_known_streak }} days).</p>
+                <form method="post" action="{{ url_for('unlink') }}">
+                    <button type="submit">Unlink</button>
+                </form>
+            {% else %}
+                <p><a class="btn" href="{{ url_for('hackatime_oauth_start') }}">Verify with Hackatime</a></p>
+                <p>or enter it manually (not verified as yours):</p>
+                <form method="post" action="{{ url_for('link') }}">
+                    <input type="text" name="hackatime_username" placeholder="Your Hackatime username" required>
+                    <button type="submit">Link account</button>
+                </form>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <p><a href="{{ url_for('admin_dashboard') }}">Admin panel</a></p>
+{% endblock %}

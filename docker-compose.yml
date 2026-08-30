@@ -1,0 +1,34 @@
+services:
+  bot:
+    build: .
+    command: python bot.py
+    env_file: .env
+    volumes:
+      - hackastreak-data:/app/data
+    restart: unless-stopped
+
+  web:
+    build: .
+    command: python webapp.py
+    env_file: .env
+    volumes:
+      - hackastreak-data:/app/data
+    restart: unless-stopped
+    # Hosted on Hack Club Nest: Nest's own Caddy reverse-proxies your
+    # assigned subdomain to a port on the host, so (unlike a Cloudflare
+    # Tunnel setup) `web` just needs its port published to the host --
+    # no extra tunnel container. PORT must match the port you registered
+    # with Nest for this subdomain.
+    ports:
+      - "${PORT}:${PORT}"
+
+  scheduler:
+    build: .
+    command: python scheduler.py
+    env_file: .env
+    volumes:
+      - hackastreak-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  hackastreak-data:

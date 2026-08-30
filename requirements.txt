@@ -1,0 +1,6 @@
+slack-bolt
+requests
+python-dotenv
+flask
+authlib
+apscheduler

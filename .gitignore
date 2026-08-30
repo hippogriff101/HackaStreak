@@ -1,2 +1,4 @@
 older-stuff/
 .env
+*.db
+__pycache__/

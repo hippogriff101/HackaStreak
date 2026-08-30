@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}HackaStreak Admin Settings{% endblock %}
+{% block content %}
+    <h1>Settings</h1>
+    <nav>
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('admin_settings') }}">Settings</a>
+        <a href="{{ url_for('admin_logout') }}">Log out</a>
+    </nav>
+
+    {% if message %}<div class="message">{{ message }}</div>{% endif %}
+
+    <div class="card">
+        <form method="post" action="{{ url_for('admin_settings') }}">
+            <label>Low-streak reminder threshold (days)</label>
+            <input type="number" name="low_streak_threshold" value="{{ low_streak_threshold }}" min="0" required>
+
+            <label>Milestones (comma-separated days)</label>
+            <input type="text" name="milestones" value="{{ milestones }}" required>
+
+            <button type="submit">Save</button>
+        </form>
+    </div>
+{% endblock %}
