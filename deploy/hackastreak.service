@@ -1,0 +1,14 @@
+[Unit]
+Description=HackaStreak Slack bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/hackastreak
+ExecStart=/home/pi/hackastreak/.venv/bin/python -m hackastreak
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

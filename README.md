@@ -1,56 +1,61 @@
 # HackaStreak
 
-A parcially vibe-coded Slack Bot that tells you a users's current [hackatime](hackatime.hackclub.com) streak!
+A partially vibe-coded Slack bot that tells you a user's current [Hackatime](https://hackatime.hackclub.com) streak!
 
-[Hackatime](hackatime.hackclub.com) is a hackclub site that logs your time coding! Check out my stats at my [Hackatime public Page](hackatime.hackclub.com/@freddie)
+[Hackatime](https://hackatime.hackclub.com) is a Hack Club site that logs your time coding! Check out my stats on my [Hackatime public page](https://hackatime.hackclub.com/@freddie).
 
-This project is partically vibecoded as I'm new to requests and stuff but is a fun projects. Made using GPT-5, Github Copilot and my fingers on a keyboard.
+This project is partially vibe-coded as I'm new to requests and stuff, but it's a fun project. Made using GPT-5, GitHub Copilot, Claude and my fingers on a keyboard.
 
 > [!NOTE]
-> This is currently being hosted on a Pi Zero 2 W! 
+> This is currently hosted on a Pi Zero 2 W!
 
-## How it works?
+## Usage
 
-`/hackastreak [hackatime username]`
-Calls Hackatime [API](https://hackatime.hackclub.com/api-docs/) to find if users: 
-a) actually exists 
-or 
-b) if their stats are private
-The bot also detects errors with  api or network issues.
+| Command | What it does |
+| --- | --- |
+| `/hackastreak <username>` | Shows anyone's current streak |
+| `/hackastreak set <username>` | Links your Hackatime username to your Slack account |
+| `/hackastreak` | Shows your own streak (once linked) |
 
-There is also command line text to show what the app is doing:
+@mention the bot, or say "hackastreak" in the pingword channel, and it'll react with :eyes_shaking: and send you a message only you can see explaining how to use it.
 
-  terminal output: `Hackatime API error: {r.status_code}` or `Fetching Hackatime stats for user: {username}`
-  
-  (_this could be optimised with `logger`_)
+Admins (set in `.env`) get usage stats on the bot's App Home tab: who's using it, how often, recent activity and linked accounts.
 
+All data comes from the [Hackatime API](https://hackatime.hackclub.com/api-docs/). Linked accounts and usage logs are kept in a local SQLite file.
 
-## How to run it yourself!?
+## Running it yourself
 
-Head over to api.slack.com/apps and make a new application, enable socket mode and grab the `APP TOKEN`!
+1. Go to [api.slack.com/apps](https://api.slack.com/apps), **Create New App → From a manifest** and paste in [manifest.yml](manifest.yml).
+2. Under **Basic Information**, create an app-level token with the `connections:write` scope. That's your `SLACK_APP_TOKEN`.
+3. Install the app to your workspace and copy the **Bot User OAuth Token**. That's your `SLACK_BOT_TOKEN`.
+4. Copy `.env.example` to `.env` and fill it in.
+5. Invite the bot to the pingword channel (`/invite @HackaStreak`).
 
-Then, in slack website, make the command needed: `/hackastreak`!
+It uses Socket Mode, so nothing needs to be exposed to the internet. It just needs outbound access to Slack and Hackatime.
 
-Next add the following Bot Scopes:
-```
-commands
-chat:write
+### Raspberry Pi
 
-```
-Your good, install the app to your workspace, get the BOT TOKEN!
-
-Now add them into your `.env`!
-
-```
-SLACK_BOT_TOKEN=
-SLACK_APP_TOKEN=
-
+```sh
+git clone <this repo> ~/hackastreak && cd ~/hackastreak
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+cp .env.example .env   # then fill it in
+.venv/bin/python -m hackastreak
 ```
 
-Make sure all the dependencies are installed:
+To keep it running in the background, use the systemd unit in [deploy/](deploy/hackastreak.service) (change `User` and the paths if needed):
+
+```sh
+sudo cp deploy/hackastreak.service /etc/systemd/system/
+sudo systemctl enable --now hackastreak
+journalctl -u hackastreak -f
 ```
-requests
-slack-bolt
-dotenv
+
+### Docker / Orchard
+
+```sh
+docker build -t hackastreak .
+docker run -d --restart unless-stopped --env-file .env -v hackastreak-data:/data hackastreak
 ```
-Run the script!
+
+The database lives in `/data`, so mount a volume there to keep it between restarts. No ports need to be opened.
